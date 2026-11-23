@@ -15,5 +15,6 @@ db.init_db()
 
 
 @app.get("/api/health")
+@app.get("/health", include_in_schema=False)
 def health() -> dict[str, str]:
     return {"status": "ok"}
