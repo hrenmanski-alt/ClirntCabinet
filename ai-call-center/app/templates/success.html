@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — ClirntCabinet{% endblock %}
+{% block content %}
+<div class="success-card">
+  <div class="success-icon">✅</div>
+  <h1>{{ title }}</h1>
+  <p class="lead">{{ message }}</p>
+  <a class="btn primary" href="{{ link }}">{{ link_text }}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Вход — ClirntCabinet{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h1>С возвращением!</h1>
+  <p class="muted">Войдите, чтобы управлять своими сайтами и автоматизациями.</p>
+
+  {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+  <form method="post" action="/login" class="form">
+    <label>Ваш email
+      <input type="email" name="email" required placeholder="you@example.com" autocomplete="email">
+    </label>
+    <label>Пароль
+      <input type="password" name="password" required placeholder="••••••" autocomplete="current-password">
+    </label>
+    <button class="btn primary" type="submit">Войти</button>
+  </form>
+
+  <p class="muted center">Ещё нет аккаунта? <a href="/register">Создать бесплатно</a></p>
+</div>
+{% endblock %}

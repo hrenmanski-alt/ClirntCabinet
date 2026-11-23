@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Личный кабинет — ClirntCabinet{% endblock %}
+{% block content %}
+<h1>Здравствуйте, {{ user['email'].split('@')[0] }}! 👋</h1>
+<p class="lead">Здесь вы управляете своими сайтами и автоматизациями. Всё просто: выбираете готовое решение — мы делаем остальное.</p>
+
+<div class="stats">
+  <div class="stat"><span class="stat-num">{{ stats.sites }}</span><span class="stat-label">Сайтов</span></div>
+  <div class="stat"><span class="stat-num">{{ stats.workflows }}</span><span class="stat-label">Автоматизаций</span></div>
+  <div class="stat"><span class="stat-num">{{ stats.invoices }}</span><span class="stat-label">Счетов</span></div>
+</div>
+
+<h2>Что хотите сделать?</h2>
+<div class="actions">
+  <a class="action-card" href="/catalog">
+    <span class="action-icon">🧩</span>
+    <strong>Выбрать готовое решение</strong>
+    <span class="muted">Сайт, заявки, напоминания, AI-звонки — за пару кликов</span>
+  </a>
+  <a class="action-card" href="/sites/new">
+    <span class="action-icon">🌐</span>
+    <strong>Создать сайт</strong>
+    <span class="muted">Ответьте на несколько вопросов — сайт готов</span>
+  </a>
+  <a class="action-card" href="/billing">
+    <span class="action-icon">💳</span>
+    <strong>Счета и оплата</strong>
+    <span class="muted">Управляйте тарифами и оплатой</span>
+  </a>
+</div>
+
+<h2>Популярные решения</h2>
+<div class="cards">
+  {% for recipe in recipes %}
+  <div class="card">
+    <div class="card-icon">{{ recipe.icon }}</div>
+    <h3>{{ recipe.title }}</h3>
+    <p class="muted">{{ recipe.description }}</p>
+    <div class="card-footer">
+      <span class="price">{{ recipe.price }} ₽</span>
+      <a class="btn small" href="/catalog/{{ recipe.slug }}">Подробнее</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="hint">
+  <strong>AI-помощник скоро появится.</strong>
+  Просто напишите, что нужно вашему бизнесу, — и он соберёт сайт и автоматизацию за вас.
+</div>
+{% endblock %}

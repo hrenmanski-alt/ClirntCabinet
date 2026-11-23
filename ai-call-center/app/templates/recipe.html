@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ recipe.title }} — ClirntCabinet{% endblock %}
+{% block content %}
+<a class="back" href="/catalog">← Назад в каталог</a>
+
+<div class="two-columns">
+  <div>
+    <div class="card-icon big">{{ recipe.icon }}</div>
+    <h1>{{ recipe.title }}</h1>
+    <p class="lead">{{ recipe.description }}</p>
+
+    <div class="steps">
+      <h3>Как это работает</h3>
+      <ol>
+        <li>Вы заполняете пару полей ниже</li>
+        <li>Мы создаём решение в вашем кабинете</li>
+        <li>Вы оплачиваете его — и всё начинает работать</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h2>Расскажите о себе</h2>
+    <p class="muted">Всё понятным языком, без технических слов.</p>
+    <form method="post" action="/catalog/{{ recipe.slug }}" class="form">
+      {% for field in recipe.fields %}
+      <label>{{ field.label }}
+        <input name="{{ field.name }}" placeholder="{{ field.placeholder }}" required>
+      </label>
+      {% endfor %}
+      <div class="total">Стоимость: <strong>{{ recipe.price }} ₽</strong></div>
+      <button class="btn primary" type="submit">Создать решение</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

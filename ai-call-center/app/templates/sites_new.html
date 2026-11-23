@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Новый сайт — ClirntCabinet{% endblock %}
+{% block content %}
+<a class="back" href="/dashboard">← В личный кабинет</a>
+<h1>Создать сайт</h1>
+<p class="lead">Выберите тип и ответьте на несколько вопросов. Мы подготовим сайт за вас.</p>
+
+<form method="post" action="/sites/new" class="form wide">
+  <h2>1. Выберите тип сайта</h2>
+  <div class="radio-cards">
+    {% for key, tpl in templates.items() %}
+    <label class="radio-card">
+      <input type="radio" name="template" value="{{ key }}" {% if key == 'beauty' %}checked{% endif %}>
+      <span>
+        <strong>{{ tpl.title }}</strong>
+        <small>{{ tpl.description }}</small>
+      </span>
+    </label>
+    {% endfor %}
+  </div>
+
+  <h2>2. Пара слов о вас</h2>
+  <label>Название компании
+    <input name="title" placeholder="Например, Салон красоты «Ромашка»" required>
+  </label>
+  <label>Город
+    <input name="city" placeholder="Москва">
+  </label>
+  <label>Телефон для связи
+    <input name="phone" placeholder="+7 999 123-45-67">
+  </label>
+  <label>Что предлагаете
+    <input name="about" placeholder="Маникюр, педикюр, уходовые процедуры">
+  </label>
+
+  <button class="btn primary" type="submit">Создать сайт</button>
+</form>
+{% endblock %}

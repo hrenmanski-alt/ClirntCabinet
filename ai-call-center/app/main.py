@@ -1,0 +1,19 @@
+from pathlib import Path
+
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
+
+from . import db
+from .portal import router as portal_router
+
+app = FastAPI(title="ClirntCabinet", description="Готовые сайты и автоматизация бизнеса без программистов")
+
+app.mount("/static", StaticFiles(directory=str(Path(__file__).parent / "static")), name="static")
+app.include_router(portal_router)
+
+db.init_db()
+
+
+@app.get("/api/health")
+def health() -> dict[str, str]:
+    return {"status": "ok"}

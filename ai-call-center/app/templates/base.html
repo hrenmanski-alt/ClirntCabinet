@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}ClirntCabinet{% endblock %}</title>
+  <link rel="stylesheet" href="/static/portal.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/dashboard">
+      <span class="brand-mark">C</span>
+      <span>ClirntCabinet<small>готовые решения для бизнеса</small></span>
+    </a>
+    {% if user %}
+    <nav>
+      <a href="/dashboard">Главная</a>
+      <a href="/catalog">Каталог решений</a>
+      <a href="/billing">Счета и оплата</a>
+      <form method="post" action="/logout" class="inline">
+        <button class="link-btn" type="submit">Выйти ({{ user['email'] }})</button>
+      </form>
+    </nav>
+    {% endif %}
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    ClirntCabinet — сайты и автоматизация без программистов.
+  </footer>
+</body>
+</html>

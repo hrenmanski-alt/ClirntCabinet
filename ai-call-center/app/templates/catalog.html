@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Каталог решений — ClirntCabinet{% endblock %}
+{% block content %}
+<h1>Каталог готовых решений</h1>
+<p class="lead">Выберите, что нужно вашему бизнесу. Мы настроим за вас — вам остаётся только оплатить и пользоваться.</p>
+
+<div class="cards">
+  {% for recipe in recipes %}
+  <div class="card">
+    <div class="card-icon">{{ recipe.icon }}</div>
+    <h3>{{ recipe.title }}</h3>
+    <p class="muted">{{ recipe.description }}</p>
+    <div class="card-footer">
+      <span class="price">{{ recipe.price }} ₽</span>
+      <a class="btn small primary" href="/catalog/{{ recipe.slug }}">Подключить</a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<h2>Или начните с сайта</h2>
+<div class="cards">
+  {% for key, tpl in templates.items() %}
+  <div class="card">
+    <h3>{{ tpl.title }}</h3>
+    <p class="muted">{{ tpl.description }}</p>
+    <a class="btn small" href="/sites/new?template={{ key }}">Создать такой</a>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Регистрация — ClirntCabinet{% endblock %}
+{% block content %}
+<div class="auth-card">
+  <h1>Начнём</h1>
+  <p class="muted">Создайте аккаунт — это бесплатно. Никаких программистов и сложных настроек.</p>
+
+  {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+  <form method="post" action="/register" class="form">
+    <label>Ваш email
+      <input type="email" name="email" required placeholder="you@example.com" autocomplete="email">
+    </label>
+    <label>Придумайте пароль
+      <input type="password" name="password" required minlength="6" placeholder="минимум 6 символов" autocomplete="new-password">
+    </label>
+    <button class="btn primary" type="submit">Создать аккаунт</button>
+  </form>
+
+  <p class="muted center">Уже есть аккаунт? <a href="/login">Войти</a></p>
+</div>
+{% endblock %}

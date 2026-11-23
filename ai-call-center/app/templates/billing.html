@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Счета и оплата — ClirntCabinet{% endblock %}
+{% block content %}
+<h1>Счета и оплата</h1>
+<p class="lead">Здесь видны все ваши покупки. Сейчас оплата работает в демо-режиме — деньги не списываются.</p>
+
+{% if invoices %}
+<table class="table">
+  <thead>
+    <tr><th>Решение</th><th>Сумма</th><th>Статус</th><th></th></tr>
+  </thead>
+  <tbody>
+    {% for inv in invoices %}
+    <tr>
+      <td>{{ inv['description'] }}</td>
+      <td>{{ inv['amount'] }} ₽</td>
+      <td>
+        {% if inv['status'] == 'paid' %}
+          <span class="badge paid">Оплачено</span>
+        {% else %}
+          <span class="badge pending">Ожидает оплаты</span>
+        {% endif %}
+      </td>
+      <td>
+        {% if inv['status'] != 'paid' %}
+        <form method="post" action="/billing/{{ inv['id'] }}/pay">
+          <button class="btn small primary" type="submit">Оплатить</button>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty">
+  <p>Пока нет счетов.</p>
+  <a class="btn primary" href="/catalog">Выбрать решение в каталоге</a>
+</div>
+{% endif %}
+{% endblock %}
