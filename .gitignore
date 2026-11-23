@@ -12,4 +12,5 @@ venv/
 *.jpeg
 *.png
 *.webp
+!docs/scheme.png
 data/
