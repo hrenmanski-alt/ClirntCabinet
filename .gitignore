@@ -14,3 +14,5 @@ venv/
 *.webp
 !docs/scheme.png
 data/
+exports/
+backups/
