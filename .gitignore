@@ -13,6 +13,7 @@ venv/
 *.png
 *.webp
 !docs/scheme.png
+!docs/architecture_full.png
 data/
 exports/
 backups/
