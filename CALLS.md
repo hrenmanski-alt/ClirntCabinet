@@ -187,10 +187,12 @@ StatusCallback=https://ВАШ_ДОМЕН/twilio/status
 - Потеря WebSocket → звонок переводится в `failed`, транскрипт сохраняется.
 - `MAX_UTTERANCE_MS` защищает от бесконечной речи: буфер принудительно обрабатывается.
 
-## 11. Что доделываем сегодня (24 ноября)
+## 11. Что сделано 24 ноября (ветка `feature/call-center`)
 
-- `app/telephony.py`: `CallRecord`, `MockProvider`, `TwilioProvider`.
-- `app/calls_api.py`: REST + WebSocket endpoints.
-- Таблица `calls` и методы в `db.py`.
-- Страница `/calls` в кабинете и голосовой JS-виджет.
-- Тесты: `MockProvider`, протокол `/ws/browser`, трансформация аудио.
+- `app/telephony.py`: `CallRecord`, `MockProvider`, `TwilioProvider`, `CallManager`.
+- `app/calls_api.py`: REST + WebSocket endpoints, TwiML-вебхуки.
+- Таблица `calls` и методы в `db.py`; счётчик звонков на дашборде.
+- Страница `/calls` в кабинете и голосовой JS-виджет (`call_widget.js`).
+- Тесты: REST, `/ws/browser`, TwiML, аудиопреобразования — 15 проверок, все прошли.
+
+Осталось для реальных звонков: ключи и номер провайдера + публичный HTTPS/WSS адрес.

@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}AI-звонки — ClirntCabinet{% endblock %}
+{% block content %}
+<h1>AI-звонки</h1>
+<p class="lead">Поговорите с ИИ прямо в браузере или запустите звонок по базе. Весь разговор сохраняется в журнале.</p>
+
+<div class="two-columns">
+  <div class="form-card">
+    <h2>🎙 Поговорить с ИИ сейчас</h2>
+    <p class="muted">Нажмите кнопку, говорите — ИИ ответит голосом. Работает в Chrome и других современных браузерах.</p>
+
+    <label>Сценарий разговора
+      <select id="voice-scenario" class="input-select">
+        <option value="sales">Продажи</option>
+        <option value="support">Поддержка</option>
+        <option value="reminder">Напоминания</option>
+        <option value="generic">Общий разговор</option>
+      </select>
+    </label>
+
+    <div class="voice-controls">
+      <button class="btn primary" id="voice-start" type="button">Начать разговор</button>
+      <button class="btn" id="voice-mic" type="button" disabled>🎤 Говорить</button>
+      <button class="btn" id="voice-stop" type="button" disabled>Завершить</button>
+    </div>
+    <p class="muted" id="voice-status">ИИ пока не подключён.</p>
+
+    <div class="chat-log" id="chat-log"></div>
+  </div>
+
+  <div class="form-card">
+    <h2>📞 Запустить звонок</h2>
+    <p class="muted">В демо-режиме звонок создаётся без телефонного провайдера и виден в журнале.</p>
+    <form id="call-form" class="form">
+      <label>Номер телефона
+        <input name="phone" placeholder="+7 999 123-45-67">
+      </label>
+      <label>Сценарий
+        <select name="scenario" class="input-select">
+          <option value="sales">Продажи</option>
+          <option value="support">Поддержка</option>
+          <option value="reminder">Напоминания</option>
+          <option value="generic">Общий разговор</option>
+        </select>
+      </label>
+      <label>Провайдер
+        <select name="provider" class="input-select">
+          <option value="mock">Демо (без звонка)</option>
+          <option value="twilio">Реальный звонок (Twilio)</option>
+        </select>
+      </label>
+      <button class="btn primary" type="submit">Запустить</button>
+    </form>
+    <p class="muted" id="call-result"></p>
+  </div>
+</div>
+
+<h2>Журнал звонков</h2>
+{% if calls %}
+<table class="table">
+  <thead><tr><th>Номер</th><th>Сценарий</th><th>Статус</th><th>Результат</th><th>Дата</th></tr></thead>
+  <tbody>
+    {% for call in calls %}
+    <tr>
+      <td>{{ call['phone'] or '—' }}</td>
+      <td>{{ call['scenario'] }}</td>
+      <td><span class="badge {% if call['status'] == 'completed' %}paid{% else %}pending{% endif %}">{{ call['status'] }}</span></td>
+      <td>{{ call['result'] or '—' }}</td>
+      <td>{{ call['created_at']|int }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<div class="empty"><p>Звонков пока нет. Начните разговор или запустите звонок выше.</p></div>
+{% endif %}
+
+<script src="/static/call_widget.js"></script>
+{% endblock %}

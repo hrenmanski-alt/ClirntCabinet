@@ -247,6 +247,22 @@ async def new_site_submit(request: Request):
     )
 
 
+@router.get("/calls", response_class=HTMLResponse)
+def calls_page(request: Request):
+    user, redirect = _need_user(request)
+    if redirect:
+        return redirect
+    return templates.TemplateResponse(
+        "calls.html",
+        {
+            "request": request,
+            "user": user,
+            "calls": db.list_calls(user["id"]),
+            "recipes": RECIPES,
+        },
+    )
+
+
 @router.get("/billing", response_class=HTMLResponse)
 def billing(request: Request):
     user, redirect = _need_user(request)

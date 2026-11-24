@@ -65,6 +65,18 @@ def init_db() -> None:
                 status TEXT NOT NULL DEFAULT 'pending',
                 created_at REAL NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS calls (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+                provider TEXT NOT NULL DEFAULT 'mock',
+                phone TEXT NOT NULL DEFAULT '',
+                scenario TEXT NOT NULL DEFAULT 'sales',
+                status TEXT NOT NULL DEFAULT 'created',
+                transcript TEXT NOT NULL DEFAULT '[]',
+                result TEXT NOT NULL DEFAULT '',
+                created_at REAL NOT NULL,
+                finished_at REAL
+            );
             """
         )
 
@@ -192,6 +204,59 @@ def pay_invoice(invoice_id: int, user_id: int) -> None:
         )
 
 
+# ── Звонки ──────────────────────────────────────────────────────────────────
+def create_call(user_id: int, phone: str, scenario: str, provider: str) -> int:
+    with connect() as conn:
+        cur = conn.execute(
+            """INSERT INTO calls (user_id, provider, phone, scenario, status, created_at)
+               VALUES (?,?,?,?,?,?)""",
+            (user_id, provider, phone, scenario, "created", time.time()),
+        )
+        return int(cur.lastrowid)
+
+
+def list_calls(user_id: int) -> list[sqlite3.Row]:
+    with connect() as conn:
+        return conn.execute(
+            "SELECT * FROM calls WHERE user_id = ? ORDER BY created_at DESC", (user_id,)
+        ).fetchall()
+
+
+def get_call(call_id: int, user_id: int | None = None) -> sqlite3.Row | None:
+    with connect() as conn:
+        if user_id is None:
+            return conn.execute("SELECT * FROM calls WHERE id = ?", (call_id,)).fetchone()
+        return conn.execute(
+            "SELECT * FROM calls WHERE id = ? AND user_id = ?", (call_id, user_id)
+        ).fetchone()
+
+
+def set_call_status(call_id: int, status: str) -> None:
+    with connect() as conn:
+        conn.execute("UPDATE calls SET status = ? WHERE id = ?", (status, call_id))
+
+
+def append_transcript(call_id: int, role: str, text: str) -> None:
+    with connect() as conn:
+        row = conn.execute("SELECT transcript FROM calls WHERE id = ?", (call_id,)).fetchone()
+        if not row:
+            return
+        transcript = json.loads(row["transcript"] or "[]")
+        transcript.append({"role": role, "text": text})
+        conn.execute(
+            "UPDATE calls SET transcript = ? WHERE id = ?",
+            (json.dumps(transcript, ensure_ascii=False), call_id),
+        )
+
+
+def finish_call(call_id: int, result: str = "", status: str = "completed") -> None:
+    with connect() as conn:
+        conn.execute(
+            "UPDATE calls SET status = ?, result = ?, finished_at = ? WHERE id = ?",
+            (status, result, time.time(), call_id),
+        )
+
+
 def stats(user_id: int) -> dict[str, int]:
     with connect() as conn:
         def count(table: str) -> int:
@@ -203,4 +268,5 @@ def stats(user_id: int) -> dict[str, int]:
             "sites": count("sites"),
             "workflows": count("workflows"),
             "invoices": count("invoices"),
+            "calls": count("calls"),
         }

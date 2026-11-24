@@ -237,6 +237,36 @@ h3 { font-size: 18px; margin: 0 0 8px; }
 .table th, .table td { padding: 14px 16px; text-align: left; border-bottom: 1px solid var(--line); }
 .table th { font-size: 13px; color: var(--muted); background: #fafafa; }
 
+.input-select {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: inherit;
+  background: #fff;
+}
+
+.voice-controls { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 8px; }
+
+.chat-log {
+  margin-top: 18px;
+  max-height: 300px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px dashed var(--line);
+  padding-top: 14px;
+}
+
+.chat-line {
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+}
+.chat-line.client { background: #eef2ff; align-self: flex-end; }
+.chat-line.ai { background: #f1f5f9; align-self: flex-start; }
+
 .badge { padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
 .badge.paid { background: #e7f7ee; color: var(--green); }
 .badge.pending { background: #fff4e5; color: #b45309; }

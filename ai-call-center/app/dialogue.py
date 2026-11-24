@@ -108,9 +108,13 @@ class DialogueEngine:
         """Первая реплика — ассистент говорит первым."""
         if self.use_llm and not session.history:
             result = await self._llm_reply(session, "Поздоровайся и представься.")
-            session.add("assistant", result.text)
-            return result
-        return Reply(_RULES[session.scenario][0])
+        else:
+            result = Reply(_RULES[session.scenario][0])
+            session.step = 1
+        session.add("assistant", result.text)
+        if result.end_call:
+            session.finished = True
+        return result
 
     # ── LLM ──────────────────────────────────────────────────────────────────
     async def _llm_reply(self, session: Session, user_text: str) -> Reply:
