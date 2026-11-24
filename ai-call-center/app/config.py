@@ -35,6 +35,12 @@ class Settings:
     public_ws_url: str = os.getenv("PUBLIC_WS_URL", "").strip()
     public_base_url: str = os.getenv("PUBLIC_BASE_URL", "").strip()
 
+    novofon_sip_host: str = os.getenv("NOVOFON_SIP_HOST", "").strip()
+    novofon_sip_user: str = os.getenv("NOVOFON_SIP_USER", "").strip()
+    novofon_sip_password: str = os.getenv("NOVOFON_SIP_PASSWORD", "").strip()
+    novofon_from_number: str = os.getenv("NOVOFON_FROM_NUMBER", "").strip()
+    novofon_gateway_ws_url: str = os.getenv("NOVOFON_GATEWAY_WS_URL", "").strip()
+
     vad_threshold: int = _int("VAD_THRESHOLD", 350)
     silence_ms: int = _int("SILENCE_MS", 700)
     max_utterance_ms: int = _int("MAX_UTTERANCE_MS", 15000)

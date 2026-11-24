@@ -117,6 +117,26 @@ class TwilioProvider(CallProvider):
             )
 
 
+class NovofonProvider(CallProvider):
+    """Заготовка под российского SIP-провайдера Novofon.
+
+    В отличие от Twilio, у Novofon нет готового WebSocket-медиа в таком же виде:
+    нужен SIP-шлюз (Asterisk / FreeSWITCH), который принимает звонок и отдаёт
+    аудио на наш сервер. Код шлюза появится после получения SIP-доступа.
+    """
+
+    name = "novofon"
+
+    async def start_call(self, call: CallRecord) -> dict[str, Any]:
+        raise RuntimeError(
+            "Novofon требует SIP-шлюз (Asterisk/FreeSWITCH) и данные доступа. "
+            "Смотрите NOVOFON.md."
+        )
+
+    async def hangup(self, call: CallRecord) -> None:
+        return None
+
+
 class CallManager:
     """Управляет жизненным циклом звонков и связывает их с ИИ-ядром."""
 
@@ -126,6 +146,7 @@ class CallManager:
         self.providers: dict[str, CallProvider] = {
             "mock": MockProvider(),
             "twilio": TwilioProvider(),
+            "novofon": NovofonProvider(),
         }
 
     def create(self, user_id: int, phone: str, scenario: str, provider: str) -> CallRecord:
