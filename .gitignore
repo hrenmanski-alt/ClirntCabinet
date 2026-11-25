@@ -14,6 +14,7 @@ venv/
 *.webp
 !docs/scheme.png
 !docs/architecture_full.png
+!docs/architecture_mega.png
 data/
 exports/
 backups/
