@@ -41,6 +41,12 @@ class Settings:
     novofon_from_number: str = os.getenv("NOVOFON_FROM_NUMBER", "").strip()
     novofon_gateway_ws_url: str = os.getenv("NOVOFON_GATEWAY_WS_URL", "").strip()
 
+    github_token: str = os.getenv("GITHUB_TOKEN", "").strip()
+    huggingface_token: str = os.getenv("HF_TOKEN", "").strip()
+    https_proxy: str = os.getenv("HTTPS_PROXY", "").strip()
+    business_planner_llm: bool = os.getenv("BUSINESS_PLANNER_LLM", "0") == "1"
+    hourly_rate: int = _int("HOURLY_RATE", 3000)
+
     vad_threshold: int = _int("VAD_THRESHOLD", 350)
     silence_ms: int = _int("SILENCE_MS", 700)
     max_utterance_ms: int = _int("MAX_UTTERANCE_MS", 15000)
