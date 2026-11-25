@@ -15,7 +15,7 @@ class SpeechToText:
         if len(pcm_8k) < 1600:
             return ""
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=30.0, proxy=settings.https_proxy or None) as client:
                 response = await client.post(
                     f"{settings.openai_base_url}/audio/transcriptions",
                     headers={"Authorization": f"Bearer {settings.openai_api_key}"},
@@ -36,7 +36,7 @@ class TextToSpeech:
         if not settings.server_audio or not text.strip():
             return b""
         try:
-            async with httpx.AsyncClient(timeout=30.0) as client:
+            async with httpx.AsyncClient(timeout=30.0, proxy=settings.https_proxy or None) as client:
                 response = await client.post(
                     f"{settings.openai_base_url}/audio/speech",
                     headers={"Authorization": f"Bearer {settings.openai_api_key}"},

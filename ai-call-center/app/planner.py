@@ -67,7 +67,7 @@ class BusinessPlanner:
 
     async def _llm_steps(self, prompt: str, niche: str) -> list[dict] | None:
         try:
-            async with httpx.AsyncClient(timeout=15.0) as client:
+            async with httpx.AsyncClient(timeout=15.0, proxy=settings.https_proxy or None) as client:
                 response = await client.post(
                     f"{settings.openai_base_url}/chat/completions",
                     headers={"Authorization": f"Bearer {settings.openai_api_key}"},

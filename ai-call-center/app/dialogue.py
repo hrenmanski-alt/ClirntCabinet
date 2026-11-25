@@ -129,7 +129,7 @@ class DialogueEngine:
         messages.append({"role": "user", "content": user_text})
 
         try:
-            async with httpx.AsyncClient(timeout=20.0) as client:
+            async with httpx.AsyncClient(timeout=20.0, proxy=settings.https_proxy or None) as client:
                 response = await client.post(
                     f"{settings.openai_base_url}/chat/completions",
                     headers={"Authorization": f"Bearer {settings.openai_api_key}"},
