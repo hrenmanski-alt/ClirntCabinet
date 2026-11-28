@@ -61,3 +61,15 @@
 - QR-код, HTML-ярлык и текстовый файл со ссылкой сохранены на телефон в «Загрузки»;
   адрес также открыт в браузере телефона и скопирован в буфер.
 - Итог: постоянная витрина проекта есть; живой FastAPI-кабинет требует VPS/домена или PRO Space.
+
+## 28 ноября — необычный дизайн из символов
+
+- Установлены проверенные пакеты: `imageio`, `imageio-ffmpeg`, `pyfiglet`, `rich`
+  (плюс уже были `Pillow` и `NumPy`). Чужой код из GitHub не исполнялся.
+- Скачан public-domain GIF вращающейся Земли (Wikimedia Commons / NASA).
+- Написан `tools/gif_to_braille.py`: autocontrast + gamma + ordered dithering → 44 кадра
+  Unicode Braille 84×42 (`deploy_space/ascii_frames.js`, `ascii_sample.txt`).
+- Переделан `deploy_space/index.html`: неоновый терминал, глитч-заголовок, scanlines,
+  шум, анимированная Земля из символов, кнопка паузы, исходный GIF рядом с артом.
+- Обновлён Static Space: коммит HF `53b7356`, проверка `ascii_frames.js` → `200`, 469 KB.
+- Добавлен `DESIGN_TOOLS.md` с конвейером и источниками.
