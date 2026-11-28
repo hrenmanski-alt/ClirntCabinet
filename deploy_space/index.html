@@ -3,183 +3,190 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ClirntCabinet // ONE PROMPT → BUSINESS</title>
+<title>ClirntCabinet — один промпт, готовый бизнес</title>
 <style>
 :root{
-  --bg:#05070d; --panel:#0a0f1c; --line:#1b2740;
-  --cyan:#43f5ff; --pink:#ff43c8; --lime:#b8ff43; --violet:#9a6bff;
-  --text:#e8f1ff; --muted:#7f92b3;
+  --ink:#0b1020; --muted:#64708c; --paper:#f7f8fc; --card:#ffffff;
+  --violet:#6d5efc; --cyan:#00d4ff; --pink:#ff4fc8; --lime:#a3e635;
+  --line:#e6e9f2; --shadow:0 22px 60px rgba(35,45,90,.12);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;background:var(--bg);color:var(--text);
-  font:15px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,"DejaVu Sans Mono",monospace;
-  overflow-x:hidden;cursor:crosshair;
+  margin:0;color:var(--ink);background:#f5f6fb;
+  font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  overflow-x:hidden;
 }
-/* --- atmosphere --- */
-.scanlines,.noise,.glow{position:fixed;inset:0;pointer-events:none;z-index:9}
-.scanlines{background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(0,0,0,.28) 3px 4px);opacity:.45}
-.noise{opacity:.045;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-.glow{background:radial-gradient(520px circle at var(--mx,50%) var(--my,20%),rgba(67,245,255,.09),transparent 70%)}
-a{color:var(--cyan);text-decoration:none}
+/* modern ambient background */
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden}
+.bg i{position:absolute;display:block;border-radius:50%;filter:blur(80px);opacity:.55}
+.bg i:nth-child(1){width:520px;height:520px;background:#b8b0ff;left:-180px;top:-160px}
+.bg i:nth-child(2){width:480px;height:480px;background:#7ee8ff;right:-160px;top:80px}
+.bg i:nth-child(3){width:420px;height:420px;background:#ffb6e6;left:45%;bottom:-220px}
+.bg-grid{position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background-image:linear-gradient(rgba(109,94,252,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(109,94,252,.045) 1px,transparent 1px);
+  background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 85%)}
+a{color:var(--violet);text-decoration:none}
 a:hover{color:var(--pink)}
-.wrap{position:relative;z-index:10;max-width:1180px;margin:auto;padding:0 20px 100px}
+.wrap{max-width:1180px;margin:auto;padding:0 24px 100px}
 
-/* --- ticker --- */
-.ticker{position:relative;z-index:11;overflow:hidden;border-bottom:1px solid var(--line);background:#070b14;white-space:nowrap;font-size:11px;letter-spacing:.18em;color:var(--muted);padding:9px 0}
-.ticker div{display:inline-block;animation:slide 26s linear infinite}
-.ticker b{color:var(--lime);font-weight:400}
-@keyframes slide{from{transform:translateX(100vw)}to{transform:translateX(-100%)}}
+/* nav */
+header.nav{display:flex;align-items:center;justify-content:space-between;padding:24px 0 8px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.4px;font-size:18px}
+.brand b{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,var(--violet),var(--pink));display:grid;place-items:center;color:#fff;box-shadow:0 8px 20px rgba(109,94,252,.35)}
+nav.links{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+nav.links a{padding:9px 16px;border-radius:999px;color:var(--muted);font-size:14px;font-weight:600}
+nav.links a:hover{background:#fff;color:var(--ink);box-shadow:0 6px 18px rgba(35,45,90,.08)}
+@media(max-width:700px){nav.links a:nth-child(-n+2){display:none}}
 
-/* --- hero --- */
-.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:center;padding:54px 0 26px}
-.terminal{
-  position:relative;border:1px solid var(--line);border-radius:4px;background:#02040a;
-  padding:14px;box-shadow:0 0 0 1px rgba(67,245,255,.06),0 24px 80px rgba(0,0,0,.65),inset 0 0 60px rgba(67,245,255,.035);
-  overflow:hidden;
+/* hero */
+.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;padding:70px 0 34px}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;box-shadow:0 8px 24px rgba(35,45,90,.06)}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 0 4px rgba(163,230,53,.18)}
+h1{font-size:clamp(40px,6.2vw,72px);line-height:1.02;letter-spacing:-3.5px;margin:22px 0 20px;font-weight:850}
+h1 .grad{background:linear-gradient(100deg,var(--violet),var(--cyan) 45%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:18px;color:var(--muted);max-width:560px;margin:0}
+.lead strong{color:var(--ink);font-weight:700}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+.btn{padding:15px 24px;border-radius:14px;background:var(--ink);color:#fff;font:700 14px/1 inherit;box-shadow:0 14px 30px rgba(11,16,32,.22);transition:.2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(11,16,32,.28);color:#fff}
+.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 10px 24px rgba(35,45,90,.08)}
+.btn.alt:hover{color:var(--violet);border-color:var(--violet)}
+.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-size:13px}
+.trust span{display:flex;align-items:center;gap:7px}
+.trust i{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--violet));display:inline-block;opacity:.85}
+
+/* art card */
+.art{position:relative;border-radius:28px;padding:18px;background:linear-gradient(160deg,rgba(255,255,255,.9),rgba(255,255,255,.6));border:1px solid rgba(255,255,255,.9);box-shadow:var(--shadow);backdrop-filter:blur(18px);overflow:hidden}
+.art:before{content:"";position:absolute;inset:-2px;border-radius:30px;background:linear-gradient(120deg,var(--violet),var(--cyan),var(--pink));z-index:-1;opacity:.35;filter:blur(14px)}
+.art-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.art-top .dots{display:flex;gap:5px}
+.art-top .dots i{width:8px;height:8px;border-radius:50%;background:var(--violet)}
+.art-top .dots i:nth-child(2){background:var(--cyan)}
+.art-top .dots i:nth-child(3){background:var(--pink)}
+.art-top small{color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.art-top button{margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:6px 12px;font:700 11px/1 inherit;cursor:pointer}
+.art-top button:hover{color:var(--violet);border-color:var(--violet)}
+pre#ascii{margin:0;white-space:pre;overflow:hidden;width:100%;
+  font:7px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0;
+  color:var(--violet);text-shadow:0 0 14px rgba(109,94,252,.35);
+  background:radial-gradient(120% 100% at 50% 40%,#f4f1ff,#eef9ff 60%,#fff0fb);
+  border-radius:18px;padding:18px 14px;
 }
-.terminal:before{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 42%,rgba(67,245,255,.07) 50%,transparent 58%);transform:translateX(-100%);animation:sweep 6s ease-in-out infinite}
-@keyframes sweep{0%,60%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.bar{display:flex;gap:6px;margin-bottom:10px}
-.bar i{width:9px;height:9px;border-radius:50%;background:var(--pink);box-shadow:0 0 12px var(--pink)}
-.bar i:nth-child(2){background:var(--cyan);box-shadow:0 0 12px var(--cyan)}
-.bar i:nth-child(3){background:var(--lime);box-shadow:0 0 12px var(--lime)}
-.bar span{margin-left:auto;color:var(--muted);font-size:10px;letter-spacing:.12em}
-pre#ascii{
-  margin:0;color:var(--cyan);font:10px/1 ui-monospace,Menlo,Consolas,"DejaVu Sans Mono",monospace;
-  letter-spacing:0;text-shadow:0 0 8px rgba(67,245,255,.55);white-space:pre;
-  width:100%;overflow:hidden;
-}
-@media(max-width:700px){pre#ascii{font-size:5.3px}}
-.terminal-foot{display:flex;justify-content:space-between;margin-top:12px;color:var(--muted);font-size:10px;letter-spacing:.1em}
-.btn-mini{border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:10px;padding:2px 8px;cursor:pointer}
-.btn-mini:hover{color:var(--cyan);border-color:var(--cyan)}
+@media(max-width:860px){pre#ascii{font-size:4.4px;padding:12px 8px}}
+.art-foot{display:flex;justify-content:space-between;gap:10px;margin-top:14px;color:var(--muted);font-size:11px;font-weight:600}
 
-.tag{display:inline-block;border:1px solid var(--violet);color:var(--violet);padding:3px 10px;font-size:10px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:18px}
-h1{font-size:clamp(34px,6.4vw,66px);line-height:.98;margin:0 0 18px;letter-spacing:-3px;text-transform:uppercase}
-h1 .g{position:relative;display:inline-block;color:var(--cyan)}
-h1 .g:before,h1 .g:after{content:attr(data-t);position:absolute;left:0;top:0;width:100%;overflow:hidden}
-h1 .g:before{color:var(--pink);clip-path:inset(0 0 62% 0);animation:gl1 3.4s steps(2) infinite}
-h1 .g:after{color:var(--lime);clip-path:inset(58% 0 0 0);animation:gl2 2.7s steps(2) infinite}
-@keyframes gl1{0%,88%,100%{transform:translate(0)}90%{transform:translate(-4px,1px)}94%{transform:translate(3px,-1px)}}
-@keyframes gl2{0%,85%,100%{transform:translate(0)}88%{transform:translate(4px,1px)}92%{transform:translate(-3px,0)}}
-.lead{color:var(--muted);max-width:520px;font-size:15px}
-.lead em{color:var(--text);font-style:normal;border-bottom:1px dashed var(--cyan)}
-.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
-.btn{padding:13px 22px;border:1px solid var(--cyan);color:#001015;background:var(--cyan);font:700 12px/1 inherit;letter-spacing:.12em;text-transform:uppercase;box-shadow:5px 5px 0 rgba(67,245,255,.2)}
-.btn:hover{box-shadow:5px 5px 0 var(--pink);color:#000}
-.btn.ghost{background:transparent;color:var(--cyan);border-color:var(--line);box-shadow:none}
-.btn.ghost:hover{border-color:var(--pink);color:var(--pink);box-shadow:none}
+/* stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:36px 0 86px}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.95);border-radius:20px;padding:20px;box-shadow:0 12px 30px rgba(35,45,90,.07)}
+.stat small{display:block;color:var(--muted);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.stat b{display:block;font-size:30px;letter-spacing:-1.5px;margin-top:6px;background:linear-gradient(100deg,var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* --- telemetry --- */
-.telemetry{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:38px 0 70px}
-.t{background:var(--panel);padding:16px}
-.t small{display:block;color:var(--muted);font-size:9px;letter-spacing:.18em;text-transform:uppercase}
-.t b{display:block;font-size:24px;color:var(--lime);margin-top:6px;text-shadow:0 0 18px rgba(184,255,67,.35)}
+/* sections */
+.section{margin-top:90px}
+h2{font-size:clamp(28px,4vw,44px);letter-spacing:-2px;line-height:1.1;margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 28px;font-size:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.card{background:rgba(255,255,255,.86);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 12px 34px rgba(35,45,90,.06);transition:.25s}
+.card:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(35,45,90,.12)}
+.icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;color:#fff;background:linear-gradient(135deg,var(--violet),var(--cyan));margin-bottom:16px}
+.card:nth-child(3n+2) .icon{background:linear-gradient(135deg,var(--pink),var(--violet))}
+.card:nth-child(3n) .icon{background:linear-gradient(135deg,var(--lime),var(--cyan))}
+.card h3{margin:0 0 8px;font-size:18px;letter-spacing:-.4px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.ok{color:#16a34a;font-weight:700}.wait{color:#d97706;font-weight:700}
 
-/* --- cards --- */
-h2{font-size:clamp(24px,4vw,40px);letter-spacing:-1.5px;text-transform:uppercase;margin:0 0 6px}
-h2 span{color:var(--pink)}
-.hint{color:var(--muted);margin:0 0 26px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px}
-.card{position:relative;background:linear-gradient(160deg,#0b1222,#070b14);border:1px solid var(--line);padding:22px;overflow:hidden;transition:.25s}
-.card:before{content:"";position:absolute;left:0;top:0;width:3px;height:100%;background:var(--cyan);transform:scaleY(0);transform-origin:top;transition:.25s}
-.card:hover{transform:translateY(-5px);border-color:var(--cyan);box-shadow:0 18px 40px rgba(0,0,0,.5)}
-.card:hover:before{transform:scaleY(1)}
-.card:nth-child(2n):before{background:var(--pink)}
-.card:nth-child(3n):before{background:var(--lime)}
-.card .num{color:var(--muted);font-size:10px;letter-spacing:.2em}
-.card h3{margin:8px 0 10px;font-size:17px;text-transform:uppercase;letter-spacing:.5px}
-.card p{margin:0;color:var(--muted);font-size:13px}
-.ok{color:var(--lime)}
-.wait{color:#fbbf24}
-
-.section{margin-top:84px}
-.diagram{width:100%;border:1px solid var(--line);background:#fff;padding:8px;margin-top:20px;filter:saturate(.85) contrast(1.05)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-@media(max-width:760px){.hero,.split,.telemetry{grid-template-columns:1fr}}
-pre.sample{margin:0;background:#02040a;border:1px solid var(--line);padding:12px;color:var(--cyan);font:6px/1 monospace;overflow:hidden;max-height:280px}
-img.src{width:100%;border:1px solid var(--line);background:#000}
-.logo{white-space:pre;color:var(--violet);font:10px/1.05 monospace;text-shadow:0 0 16px rgba(154,107,255,.5);overflow:hidden}
-footer{margin-top:80px;border-top:1px solid var(--line);padding-top:24px;color:var(--muted);font-size:11px;letter-spacing:.06em}
-footer a{color:var(--muted)}
+.diagram{width:100%;border-radius:20px;border:1px solid var(--line);background:#fff;padding:10px;margin-top:18px;box-shadow:0 18px 46px rgba(35,45,90,.1)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+@media(max-width:800px){.split{grid-template-columns:1fr}}
+.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 12px 30px rgba(35,45,90,.07)}
+.panel img{width:100%;border-radius:14px;display:block}
+pre.sample{margin:0;white-space:pre;overflow:hidden;font:5.5px/1 monospace;color:var(--violet);background:linear-gradient(135deg,#f6f3ff,#eefaff);border-radius:14px;padding:14px;height:100%;min-height:220px}
+footer{margin-top:100px;padding-top:28px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
+.pill{display:inline-block;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="scanlines"></div><div class="noise"></div><div class="glow"></div>
-
-<div class="ticker"><div>
-  СИСТЕМА АКТИВНА <b>◆</b> ОДИН ПРОМПТ → ГОТОВЫЙ БИЗНЕС <b>◆</b> САЙТЫ <b>◆</b> AI CALL-ЦЕНТР <b>◆</b> ЯНДЕКС ДИРЕКТ <b>◆</b> СОЦСЕТИ <b>◆</b> ЦЕНА И ОКУПАЕМОСТЬ <b>◆</b> 
-  СИСТЕМА АКТИВНА <b>◆</b> ОДИН ПРОМПТ → ГОТОВЫЙ БИЗНЕС <b>◆</b> САЙТЫ <b>◆</b> AI CALL-ЦЕНТР <b>◆</b> ЯНДЕКС ДИРЕКТ <b>◆</b> СОЦСЕТИ <b>◆</b> ЦЕНА И ОКУПАЕМОСТЬ <b>◆</b>
-</div></div>
+<div class="bg"><i></i><i></i><i></i></div><div class="bg-grid"></div>
 
 <div class="wrap">
-  <header class="hero">
-    <div class="terminal">
-      <div class="bar"><i></i><i></i><i></i><span>BRAILLE_RENDER // EARTH.SYS</span></div>
-      <pre id="ascii">ЗАГРУЗКА СИМВОЛОВ…</pre>
-      <div class="terminal-foot">
-        <span>ISO 65500 GIF → U+2800 BRAILLE</span>
-        <button class="btn-mini" id="toggle">ПАУЗА</button>
-      </div>
-    </div>
-    <div>
-      <span class="tag">Hrenmanski_alt / ClirntCabinet</span>
-      <h1>Один промпт<br><span class="g" data-t="БИЗНЕС">БИЗНЕС</span></h1>
-      <p class="lead">Личный кабинет, который превращает <em>одну фразу</em> в сайт, рекламу, соцканалы и звонки. Без программистов. С ценой и окупаемостью.</p>
-      <p class="lead">Дизайн собран из <em>символов Брайля</em>: настоящий GIF с NASA-Землёй распакован в 44 кадра Unicode-арта.</p>
-      <div class="actions">
-        <a class="btn" href="https://github.com/hrenmanski-alt/ClirntCabinet">Исходный код ↗</a>
-        <a class="btn ghost" href="#scheme">Схемы ↓</a>
-      </div>
-    </div>
+  <header class="nav">
+    <div class="brand"><b>✳</b> ClirntCabinet</div>
+    <nav class="links">
+      <a href="#features">Возможности</a>
+      <a href="#scheme">Архитектура</a>
+      <a href="#art">Символы</a>
+      <a href="https://github.com/hrenmanski-alt/ClirntCabinet">GitHub ↗</a>
+    </nav>
   </header>
 
-  <div class="telemetry">
-    <div class="t"><small>Модули готовы</small><b>04 / 04</b></div>
-    <div class="t"><small>Кадров арта</small><b>44</b></div>
-    <div class="t"><small>Smoke-тесты</small><b>42 ✓</b></div>
-    <div class="t"><small>Веток feature</small><b>07</b></div>
-  </div>
+  <main class="hero">
+    <div>
+      <span class="eyebrow"><i></i> Платформу собирают прямо сейчас</span>
+      <h1>Один промпт.<br><span class="grad">Готовый бизнес.</span></h1>
+      <p class="lead">Сайт, реклама, соцканалы и AI-звонки — из <strong>одной фразы</strong>. Без программистов и долгих согласований.</p>
+      <div class="actions">
+        <a class="btn" href="https://github.com/hrenmanski-alt/ClirntCabinet">Смотреть код ↗</a>
+        <a class="btn alt" href="#scheme">Как устроено ↓</a>
+      </div>
+      <div class="trust">
+        <span><i></i> Сайты за минуты</span><span><i></i> Цена и окупаемость</span><span><i></i> Звонки без телефонии в демо</span>
+      </div>
+    </div>
 
-  <section>
-    <h2>Что <span>уже работает</span></h2>
-    <p class="hint">Каркас продукта собран и проверен тестами. Внешние сервисы подключаются по лимитам и с подтверждениями.</p>
+    <div class="art">
+      <div class="art-top">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <small>Живая символьная скульптура</small>
+        <button id="toggle" type="button">Пауза</button>
+      </div>
+      <pre id="ascii">Загрузка символов…</pre>
+      <div class="art-foot"><span>GIF → Unicode Braille</span><span>48 кадров · 90×25</span></div>
+    </div>
+  </main>
+
+  <section class="stats">
+    <div class="stat"><small>Модулей готово</small><b>4 / 4</b></div>
+    <div class="stat"><small>Кадров арта</small><b>48</b></div>
+    <div class="stat"><small>Smoke-тестов</small><b>42 ✓</b></div>
+    <div class="stat"><small>Feature-веток</small><b>7</b></div>
+  </section>
+
+  <section id="features">
+    <h2>Что уже <span class="grad">работает</span></h2>
+    <p class="sub">Каркас продукта собран, проверен тестами и готов к подключению внешних сервисов.</p>
     <div class="grid">
-      <div class="card"><div class="num">01 // CABINET</div><h3>Личный кабинет</h3><p><span class="ok">Готово.</span> Вход, дашборд, каталог из 5 решений, создание сайта, счета и демо-оплата. FastAPI + SQLite + Jinja2.</p></div>
-      <div class="card"><div class="num">02 // VOICE</div><h3>AI call-центр</h3><p><span class="ok">Готово.</span> Русский диалог, REST + WebSocket + TwiML, mu-law аудио, STT/TTS, журнал звонков и голосовой виджет.</p></div>
-      <div class="card"><div class="num">03 // PLANNER</div><h3>Один промпт → бизнес</h3><p><span class="ok">Готово.</span> План из 9 шагов, реестр GitHub/Hugging Face, расчёт цены и окупаемости.</p></div>
-      <div class="card"><div class="num">04 // DATA</div><h3>Утилиты</h3><p><span class="ok">Готово.</span> Бэкап SQLite, CSV-экспорт, изоляция пользователей, секреты только в <code>.env</code>.</p></div>
-      <div class="card"><div class="num">05 // CONNECT</div><h3>Интеграции</h3><p><span class="wait">В работе.</span> Twilio/Novofon, Яндекс Директ и Метрика, Metricool/Telegram/VK, деплой на хостинг.</p></div>
-      <div class="card"><div class="num">06 // DEPLOY</div><h3>Публикация</h3><p><span class="wait">В работе.</span> Витрина уже на Hugging Face. Живой кабинет требует VPS/домена или PRO Space.</p></div>
+      <div class="card"><div class="icon">✦</div><h3>Личный кабинет</h3><p><span class="ok">Готово.</span> Вход, дашборд, каталог решений, создание сайта, счета и демо-оплата.</p></div>
+      <div class="card"><div class="icon">◉</div><h3>AI call-центр</h3><p><span class="ok">Готово.</span> Диалог на русском, REST + WebSocket, звук, STT/TTS и журнал звонков.</p></div>
+      <div class="card"><div class="icon">⬡</div><h3>Один промпт → бизнес</h3><p><span class="ok">Готово.</span> План из 9 шагов, реестр инструментов, цена и окупаемость.</p></div>
+      <div class="card"><div class="icon">◇</div><h3>Утилиты</h3><p><span class="ok">Готово.</span> Бэкап SQLite, CSV-экспорт, изоляция данных и секреты только в .env.</p></div>
+      <div class="card"><div class="icon">◈</div><h3>Интеграции</h3><p><span class="wait">В работе.</span> Twilio, Novofon, Яндекс Директ и Метрика, соцсети, деплой.</p></div>
+      <div class="card"><div class="icon">✳</div><h3>Публикация</h3><p><span class="wait">В работе.</span> Витрина жива на Hugging Face; кабинету нужен VPS или PRO Space.</p></div>
     </div>
   </section>
 
   <section class="section" id="scheme">
-    <h2>Архитектура <span>символами</span></h2>
-    <p class="hint">От промпта до отчёта: одна страница, 54 блока, девять слоёв.</p>
+    <h2>Архитектура одним <span class="grad">взглядом</span></h2>
+    <p class="sub">Девять слоёв, 54 блока: от промпта до отчёта клиенту.</p>
     <img class="diagram" src="assets/business_full.png" alt="Полная схема бизнес-конвейера">
     <img class="diagram" src="assets/infrastructure_short.png" alt="Короткая схема инфраструктуры">
   </section>
 
-  <section class="section">
-    <h2>GIF → <span>символы</span></h2>
-    <p class="hint">Слева — исходный public-domain GIF. Справа — результат конвертации в Unicode Braille.</p>
+  <section class="section" id="art">
+    <h2>Обычное видео — <span class="grad">в символы</span></h2>
+    <p class="sub">Слева источник, справа результат в Unicode Braille. Никакой магии — только математика и любовь к деталям.</p>
     <div class="split">
-      <img class="src" src="assets/rotating_earth.gif" alt="Исходный GIF: вращающаяся Земля">
-      <pre class="sample" id="sample">…</pre>
+      <div class="panel"><img src="assets/neon_flow.gif" alt="Абстрактная неоновая волна — исходный GIF"></div>
+      <div class="panel"><pre class="sample" id="sample">…</pre></div>
     </div>
   </section>
 
   <footer>
-    <div class="logo">   ________    ________  _   ________
-  / ____/ /   /  _/ __ \/ | / /_  __/
- / /   / /    / // /_/ /  |/ / / /
-/ /___/ /____/ // _, _/ /|  / / /
-\____/_____/___/_/ |_/_/ |_/ /_/</div>
-    <p>Статическая витрина на Hugging Face Spaces • Репозиторий: <a href="https://github.com/hrenmanski-alt/ClirntCabinet">hrenmanski-alt/ClirntCabinet</a></p>
-    <p>Генератор арта: <code>tools/gif_to_braille.py</code> • Источник GIF: Wikimedia Commons / NASA (public domain)</p>
+    <span class="pill">Hugging Face Spaces · static</span>
+    <span>Репозиторий: <a href="https://github.com/hrenmanski-alt/ClirntCabinet">hrenmanski-alt/ClirntCabinet</a></span>
+    <span>Генератор: <code>tools/gif_to_braille.py</code></span>
   </footer>
 </div>
 
@@ -191,23 +198,17 @@ footer a{color:var(--muted)}
   const sample = document.getElementById('sample');
   const toggle = document.getElementById('toggle');
   let i = 0, timer = null;
-
   function draw(){
     if(!frames.length) return;
     out.textContent = frames[i];
-    if(sample && i % 8 === 0) sample.textContent = frames[i];
+    if(sample && i % 6 === 0) sample.textContent = frames[i];
     i = (i + 1) % frames.length;
   }
-  function play(){ if(!timer) timer = setInterval(draw, 90); toggle.textContent = 'ПАУЗА'; }
-  function pause(){ clearInterval(timer); timer = null; toggle.textContent = 'ИГРАТЬ'; }
+  function play(){ if(!timer) timer = setInterval(draw, 85); toggle.textContent = 'Пауза'; }
+  function pause(){ clearInterval(timer); timer = null; toggle.textContent = 'Играть'; }
   toggle.addEventListener('click', function(){ timer ? pause() : play(); });
   document.addEventListener('keydown', function(e){ if(e.code === 'Space'){ e.preventDefault(); timer ? pause() : play(); } });
   if(frames.length){ draw(); play(); }
-
-  document.addEventListener('mousemove', function(e){
-    document.documentElement.style.setProperty('--mx', e.clientX + 'px');
-    document.documentElement.style.setProperty('--my', e.clientY + 'px');
-  });
 })();
 </script>
 </body>

@@ -12,14 +12,20 @@
 
 **Важно:** код из случайных GitHub-репозиториев не скачивался и не исполнялся. Использованы только проверенные пакеты из PyPI.
 
-## Источник GIF
+## Источники GIF
 
-`assets/rotating_earth.gif` — вращающаяся Земля, Wikimedia Commons / NASA, public domain.
+- `assets/rotating_earth.gif` — скачанный public-domain GIF (Wikimedia Commons / NASA). Остался в архиве как пример «старого» источника.
+- `assets/neon_flow.gif` — новый источник для витрины: абстрактная неоновая волна без космической тематики. Сгенерирован `tools/make_neon_gif.py` (480×270, 48 кадров).
 
-Скачано:
+Скачивание исходного GIF:
 ```bash
 curl -L -f -o assets/rotating_earth.gif \
   "https://upload.wikimedia.org/wikipedia/commons/2/2c/Rotating_earth_%28large%29.gif"
+```
+
+Генерация нового GIF:
+```bash
+python3 tools/make_neon_gif.py
 ```
 
 ## Конвертация
@@ -28,18 +34,23 @@ curl -L -f -o assets/rotating_earth.gif \
 
 1. Берёт каждый из 44 кадров.
 2. `ImageOps.autocontrast(cutoff=1)` — подъём контраста тёмного GIF.
-3. gamma `0.65` — вытягивание деталей на Земле.
+3. gamma настраивается (`--gamma`); для неоновой волны использован `2.7`, чтобы остались тёмные промежутки.
 4. Ordered dithering по матрице Байера 4×4.
 5. Каждые 2×4 пикселя → один символ Unicode Braille (`U+2800` + биты точек).
-6. Результат: `deploy_space/ascii_frames.js` (44 кадра 84×42) и `ascii_sample.txt`.
+6. Результат: `deploy_space/ascii_frames.js` (48 кадров 90×25) и `ascii_sample.txt`.
+
+Запуск:
+```bash
+python3 tools/gif_to_braille.py --cols 90 --limit 48 --gamma 2.7
+```
 
 ## Где используется
 
-`deploy_space/index.html` — неоновая витрина в стиле терминала:
+`deploy_space/index.html` — современная витрина без терминала и космоса:
 
-- анимированная Земля из Braille-символов;
-- глитч-заголовок, scanlines, шум, sweeping-блик;
-- телеметрия, карточки статусов, обе архитектурные схемы;
+- анимированная неоновая волна из Braille-символов в стеклянной карточке;
+- мягкие градиентные орбы, сетка, большая типографика, скруглённые карточки;
+- градиентный заголовок, статистика, статусы модулей, обе архитектурные схемы;
 - исходный GIF рядом с результатом конвертации;
 - пауза/воспроизведение кликом и пробелом.
 
