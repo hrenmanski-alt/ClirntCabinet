@@ -48,3 +48,16 @@
 - В `feature/call-center` реализован колл-центр: `telephony.py`, `calls_api.py`,
   таблица `calls`, страница `/calls`, голосовой виджет, 15 прошедших проверок.
 - Подробные документы `ARCHITECTURE.md` и `CALLS.md` обновлены.
+
+## 28 ноября — публикация витрины на Hugging Face
+
+- Локальный сервер поднят через `python3 -m uvicorn app.main:app` (порт 8000, ответ `302` на `/`).
+- Проба `cloudflared quick tunnel` — неудачно (502). SF-туннель `localhost.run` поднялся,
+  но бесплатный лимит быстро исчерпался и домен отозвался.
+- Создан постоянный **Static Space** `Garrapov2012/clirntcabinet` на Hugging Face
+  (аккаунт `Garrapov2012`, Docker Space недоступен без PRO → 402).
+- Загружены `deploy_space/index.html`, `README.md` с frontmatter и обе схемы
+  (`business_full.png`, `infrastructure_short.png`). Space в статусе `RUNNING`, проверка `200`.
+- QR-код, HTML-ярлык и текстовый файл со ссылкой сохранены на телефон в «Загрузки»;
+  адрес также открыт в браузере телефона и скопирован в буфер.
+- Итог: постоянная витрина проекта есть; живой FastAPI-кабинет требует VPS/домена или PRO Space.

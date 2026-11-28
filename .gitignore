@@ -17,6 +17,8 @@ venv/
 !docs/architecture_mega.png
 !docs/infrastructure_short.png
 !docs/business_full.png
+!docs/clirntcabinet_qr.png
+!deploy_space/assets/*.png
 data/
 exports/
 backups/

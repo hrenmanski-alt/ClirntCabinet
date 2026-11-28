@@ -1,0 +1,10 @@
+ClirntCabinet — постоянная витрина на Hugging Face
+https://huggingface.co/spaces/Garrapov2012/clirntcabinet
+
+Исходный код: https://github.com/hrenmanski-alt/ClirntCabinet
+
+Витрина содержит статус проекта и обе архитектурные схемы.
+Живой личный кабинет (FastAPI) пока запускается локально:
+cd ai-call-center && python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8000
+
+Для публикации живого кабинета нужен VPS + домен или PRO-аккаунт HF.
