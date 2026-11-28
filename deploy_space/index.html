@@ -6,239 +6,184 @@
 <title>ClirntCabinet — один промпт, готовый бизнес</title>
 <style>
 :root{
-  --ink:#12172b; --muted:#6a7590; --line:#e8ecf5; --paper:#ffffff;
-  --violet:#5b5bd6; --cyan:#00a8cc; --pink:#ef5da8; --mint:#34c7a1;
-  --shadow:0 24px 60px rgba(31,42,84,.10);
+  --ink:#111318; --muted:#6e6e73; --line:#e5e5ea; --blue:#0071e3;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;color:var(--ink);background:#fcfdff;
-  font:16px/1.65 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-  overflow-x:hidden;
+  margin:0;color:var(--ink);background:#fafafa;
+  font:17px/1.47 -apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Inter,Arial,sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
 }
-/* soft white atmosphere */
-.bg{position:fixed;inset:0;z-index:-3;overflow:hidden;
-  background:radial-gradient(900px 600px at 10% -5%,#f0edff 0%,transparent 60%),
-             radial-gradient(760px 560px at 95% 10%,#e7f8ff 0%,transparent 62%),
-             radial-gradient(820px 620px at 60% 100%,#fff0f8 0%,transparent 60%);
+/* скачанный GIF на заднем плане */
+.bg-gif{position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background:url("assets/hand_rotate.gif") center center/cover no-repeat;
+  opacity:.13;filter:grayscale(1) contrast(1.15);
 }
-.bg-grid{position:fixed;inset:0;z-index:-2;pointer-events:none;
-  background-image:linear-gradient(rgba(91,91,214,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(91,91,214,.045) 1px,transparent 1px);
-  background-size:46px 46px;mask-image:linear-gradient(to bottom,#000,transparent 88%)}
-/* rotating hand in the background */
-.hand{position:fixed;z-index:-1;left:62%;top:46%;width:min(58vw,680px);height:min(58vw,680px);
-  transform:translate(-50%,-50%);pointer-events:none;opacity:.13;
-  animation:spin 34s linear infinite;
+.bg-veil{position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:linear-gradient(180deg,rgba(250,250,250,.86) 0%,rgba(250,250,250,.70) 40%,rgba(250,250,250,.94) 100%);
 }
-.hand svg{width:100%;height:100%;filter:blur(.4px)}
-@keyframes spin{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-@media(prefers-reduced-motion:reduce){.hand{animation:none}}
-@media(max-width:800px){.hand{left:50%;top:32%;width:90vw;height:90vw;opacity:.10}}
-a{color:var(--violet);text-decoration:none}
-a:hover{color:var(--pink)}
-.wrap{max-width:1180px;margin:auto;padding:0 24px 100px}
+@media(max-width:700px){.bg-gif{opacity:.08}.bg-veil{background:rgba(250,250,250,.88)}}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:1120px;margin:auto;padding:0 24px 120px}
 
-/* nav */
-header.nav{display:flex;align-items:center;justify-content:space-between;padding:24px 0 8px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:850;letter-spacing:-.5px;font-size:18px}
-.brand b{width:32px;height:32px;border-radius:11px;background:linear-gradient(135deg,var(--violet),var(--pink));display:grid;place-items:center;color:#fff;box-shadow:0 10px 24px rgba(91,91,214,.28)}
-nav.links{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-nav.links a{padding:9px 16px;border-radius:999px;color:var(--muted);font-size:14px;font-weight:650}
-nav.links a:hover{background:#fff;color:var(--ink);box-shadow:0 8px 22px rgba(31,42,84,.08)}
+/* Apple-like nav */
+header.nav{display:flex;align-items:center;justify-content:space-between;padding:20px 0;position:relative;z-index:5}
+.brand{font-size:20px;font-weight:650;letter-spacing:-.6px;color:var(--ink)}
+.brand span{color:var(--blue)}
+nav.links{display:flex;gap:26px;align-items:center;font-size:13px}
+nav.links a{color:#424245}
 @media(max-width:700px){nav.links a:nth-child(-n+2){display:none}}
 
 /* hero */
-.hero{display:grid;grid-template-columns:1.05fr .95fr;gap:46px;align-items:center;padding:70px 0 34px}
-@media(max-width:860px){.hero{grid-template-columns:1fr}}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 14px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--muted);font-size:12px;font-weight:750;letter-spacing:.07em;text-transform:uppercase;box-shadow:0 8px 24px rgba(31,42,84,.05)}
-.eyebrow i{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 4px rgba(52,199,161,.16)}
-h1{font-size:clamp(40px,6.2vw,72px);line-height:1.02;letter-spacing:-3.5px;margin:22px 0 20px;font-weight:850}
-h1 .grad{background:linear-gradient(100deg,var(--violet),var(--cyan) 48%,var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
-.lead{font-size:18px;color:var(--muted);max-width:560px;margin:0}
-.lead strong{color:var(--ink);font-weight:750}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
-.btn{padding:15px 24px;border-radius:14px;background:var(--ink);color:#fff;font:700 14px/1 inherit;box-shadow:0 14px 30px rgba(18,23,43,.20);transition:.2s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(18,23,43,.26);color:#fff}
-.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 10px 24px rgba(31,42,84,.07)}
-.btn.alt:hover{color:var(--violet);border-color:var(--violet)}
-.trust{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:var(--muted);font-size:13px}
-.trust span{display:flex;align-items:center;gap:7px}
-.trust i{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--violet));display:inline-block;opacity:.85}
+.hero{text-align:center;padding:110px 0 70px}
+.kicker{font-size:14px;font-weight:650;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);margin:0 0 18px}
+h1{font-size:clamp(48px,8vw,92px);line-height:.98;letter-spacing:-5px;margin:0;font-weight:700}
+h1 em{font-style:normal;color:var(--blue)}
+.lead{max-width:650px;margin:28px auto 0;font-size:21px;line-height:1.45;color:var(--muted)}
+.lead strong{color:var(--ink);font-weight:600}
+.cta{display:flex;justify-content:center;align-items:center;gap:26px;flex-wrap:wrap;margin-top:36px}
+.btn{display:inline-block;background:var(--blue);color:#fff;border-radius:980px;padding:14px 26px;font-size:16px;font-weight:500;transition:.2s}
+.btn:hover{background:#0077ed;text-decoration:none;transform:translateY(-1px)}
+.link{font-size:17px}
 
-/* art card */
-.art{position:relative;border-radius:28px;padding:18px;background:rgba(255,255,255,.86);border:1px solid #fff;box-shadow:var(--shadow);backdrop-filter:blur(18px);overflow:hidden}
-.art:before{content:"";position:absolute;inset:-1px;border-radius:29px;background:linear-gradient(130deg,var(--violet),var(--cyan),var(--pink));z-index:-1;opacity:.18;filter:blur(16px)}
-.art-top{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.art-top .dots{display:flex;gap:5px}
-.art-top .dots i{width:8px;height:8px;border-radius:50%;background:var(--violet)}
-.art-top .dots i:nth-child(2){background:var(--cyan)}
-.art-top .dots i:nth-child(3){background:var(--pink)}
-.art-top small{color:var(--muted);font-size:11px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
-.art-top button{margin-left:auto;border:1px solid var(--line);background:#fff;color:var(--muted);border-radius:999px;padding:6px 12px;font:700 11px/1 inherit;cursor:pointer}
-.art-top button:hover{color:var(--violet);border-color:var(--violet)}
+/* product stage */
+.stage{padding:10px 0 130px}
+.stage-inner{max-width:960px;margin:auto;border-radius:34px;background:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.95);box-shadow:0 40px 90px rgba(0,0,0,.10);
+  backdrop-filter:blur(20px);padding:16px;overflow:hidden}
+.stage-top{display:flex;align-items:center;gap:8px;padding:4px 8px 14px;color:var(--muted);font-size:12px;font-weight:600}
+.stage-top i{width:8px;height:8px;border-radius:50%;background:#d2d2d7}
+.stage-top i:nth-child(2){background:#c7c7cc}.stage-top i:nth-child(3){background:#d2d2d7}
+.stage-top button{margin-left:auto;background:#f5f5f7;border:0;border-radius:980px;padding:6px 14px;font:600 12px/1 inherit;color:var(--muted);cursor:pointer}
+.stage-top button:hover{color:var(--blue)}
 pre#ascii{margin:0;white-space:pre;overflow:hidden;width:100%;
-  font:7px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:0;
-  color:var(--violet);text-shadow:0 0 14px rgba(91,91,214,.25);
-  background:linear-gradient(135deg,#f7f5ff,#eefaff 55%,#fff4fa);
-  border-radius:18px;padding:18px 14px;
-}
-@media(max-width:860px){pre#ascii{font-size:4.4px;padding:12px 8px}}
-.art-foot{display:flex;justify-content:space-between;gap:10px;margin-top:14px;color:var(--muted);font-size:11px;font-weight:650}
+  font:8px/1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  color:#1d1d1f;background:linear-gradient(145deg,#fff,#f4f7ff 60%,#fff5fb);
+  border-radius:22px;padding:28px 18px}
+@media(max-width:860px){pre#ascii{font-size:5px;padding:16px 10px}}
+.stage-foot{display:flex;justify-content:space-between;gap:12px;padding:14px 8px 4px;color:var(--muted);font-size:12px}
 
-/* stats */
-.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:36px 0 86px}
-@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
-.stat{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:0 12px 30px rgba(31,42,84,.06)}
-.stat small{display:block;color:var(--muted);font-size:11px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}
-.stat b{display:block;font-size:30px;letter-spacing:-1.5px;margin-top:6px;background:linear-gradient(100deg,var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+/* big statement */
+.statement{padding:40px 0 140px;text-align:center;max-width:880px;margin:auto}
+.statement h2{font-size:clamp(34px,5.4vw,64px);line-height:1.05;letter-spacing:-3.5px;margin:0 0 22px;font-weight:700}
+.statement p{font-size:20px;color:var(--muted);margin:0}
 
-/* sections */
-.section{margin-top:90px}
-h2{font-size:clamp(28px,4vw,44px);letter-spacing:-2px;line-height:1.1;margin:0 0 8px}
-.sub{color:var(--muted);margin:0 0 28px;font-size:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:0 12px 34px rgba(31,42,84,.06);transition:.25s}
-.card:hover{transform:translateY(-6px);box-shadow:0 24px 50px rgba(31,42,84,.11)}
-.icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-size:18px;color:#fff;background:linear-gradient(135deg,var(--violet),var(--cyan));margin-bottom:16px}
-.card:nth-child(3n+2) .icon{background:linear-gradient(135deg,var(--pink),var(--violet))}
-.card:nth-child(3n) .icon{background:linear-gradient(135deg,var(--mint),var(--cyan))}
-.card h3{margin:0 0 8px;font-size:18px;letter-spacing:-.4px}
-.card p{margin:0;color:var(--muted);font-size:14px}
-.ok{color:#0f9f6e;font-weight:750}.wait{color:#c77b06;font-weight:750}
+/* features */
+.section{padding:100px 0}
+.section-title{font-size:clamp(30px,4.4vw,52px);line-height:1.06;letter-spacing:-2.5px;margin:0 0 12px;font-weight:700}
+.section-sub{font-size:19px;color:var(--muted);margin:0 0 46px;max-width:680px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.card{background:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.9);border-radius:28px;padding:34px;box-shadow:0 16px 40px rgba(0,0,0,.05)}
+.card .n{font-size:13px;font-weight:650;letter-spacing:.12em;color:var(--blue)}
+.card h3{font-size:24px;letter-spacing:-.8px;margin:18px 0 10px}
+.card p{color:var(--muted);margin:0;font-size:16px}
+.ok{color:#0a8f5b}.wait{color:#b26a00}
 
-.diagram{width:100%;border-radius:20px;border:1px solid var(--line);background:#fff;padding:10px;margin-top:18px;box-shadow:0 18px 46px rgba(31,42,84,.09)}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+/* diagrams */
+.diagram{width:100%;border-radius:24px;background:#fff;border:1px solid var(--line);padding:12px;margin-top:22px;box-shadow:0 24px 60px rgba(0,0,0,.08)}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 @media(max-width:800px){.split{grid-template-columns:1fr}}
-.panel{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 12px 30px rgba(31,42,84,.06)}
-.panel img{width:100%;border-radius:14px;display:block}
-pre.sample{margin:0;white-space:pre;overflow:hidden;font:5.5px/1 monospace;color:var(--violet);background:linear-gradient(135deg,#f6f3ff,#eefaff);border-radius:14px;padding:14px;height:100%;min-height:220px}
-footer{margin-top:100px;padding-top:28px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between}
-.pill{display:inline-block;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);font-size:12px;font-weight:700;color:var(--muted)}
+.panel{background:rgba(255,255,255,.8);border:1px solid #fff;border-radius:28px;padding:18px;box-shadow:0 16px 40px rgba(0,0,0,.05)}
+.panel img{width:100%;border-radius:18px;display:block}
+pre.sample{margin:0;white-space:pre;overflow:hidden;font:5.5px/1 monospace;color:#1d1d1f;
+  background:linear-gradient(145deg,#fff,#f4f7ff);border-radius:18px;padding:16px;min-height:240px}
+
+footer{border-top:1px solid var(--line);padding-top:28px;color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+footer a{color:var(--muted)}
 </style>
 </head>
 <body>
-<div class="bg"></div><div class="bg-grid"></div>
-
-<!-- Вращающаяся рука на заднем плане -->
-<div class="hand" aria-hidden="true">
-  <svg viewBox="0 0 220 320" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="handGrad" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0%" stop-color="#5b5bd6"/>
-        <stop offset="50%" stop-color="#00a8cc"/>
-        <stop offset="100%" stop-color="#ef5da8"/>
-      </linearGradient>
-    </defs>
-    <g fill="url(#handGrad)">
-      <rect x="70" y="125" width="84" height="120" rx="42"/>
-      <rect x="68" y="34" width="20" height="112" rx="10"/>
-      <rect x="94" y="16" width="20" height="130" rx="10"/>
-      <rect x="120" y="32" width="20" height="114" rx="10"/>
-      <rect x="146" y="56" width="18" height="90" rx="9"/>
-      <rect x="34" y="140" width="20" height="84" rx="10" transform="rotate(-38 44 182)"/>
-    </g>
-  </svg>
-</div>
+<div class="bg-gif" aria-hidden="true"></div>
+<div class="bg-veil" aria-hidden="true"></div>
 
 <div class="wrap">
   <header class="nav">
-    <div class="brand"><b>✳</b> ClirntCabinet</div>
+    <div class="brand">Clirnt<span>Cabinet</span></div>
     <nav class="links">
+      <a href="#product">Продукт</a>
       <a href="#features">Возможности</a>
       <a href="#scheme">Архитектура</a>
-      <a href="#art">Символы</a>
       <a href="https://github.com/hrenmanski-alt/ClirntCabinet">GitHub ↗</a>
     </nav>
   </header>
 
   <main class="hero">
-    <div>
-      <span class="eyebrow"><i></i> Платформу собирают прямо сейчас</span>
-      <h1>Один промпт.<br><span class="grad">Готовый бизнес.</span></h1>
-      <p class="lead">Сайт, реклама, соцканалы и AI-звонки — из <strong>одной фразы</strong>. Без программистов и долгих согласований.</p>
-      <div class="actions">
-        <a class="btn" href="https://github.com/hrenmanski-alt/ClirntCabinet">Смотреть код ↗</a>
-        <a class="btn alt" href="#scheme">Как устроено ↓</a>
-      </div>
-      <div class="trust">
-        <span><i></i> Сайты за минуты</span><span><i></i> Цена и окупаемость</span><span><i></i> Звонки без телефонии в демо</span>
-      </div>
-    </div>
-
-    <div class="art">
-      <div class="art-top">
-        <div class="dots"><i></i><i></i><i></i></div>
-        <small>Живая символьная скульптура</small>
-        <button id="toggle" type="button">Пауза</button>
-      </div>
-      <pre id="ascii">Загрузка символов…</pre>
-      <div class="art-foot"><span>GIF → Unicode Braille</span><span>48 кадров · 90×25</span></div>
+    <p class="kicker">ClirntCabinet</p>
+    <h1>Одна идея.<br><em>Готовый бизнес.</em></h1>
+    <p class="lead">Сайт, реклама, соцканалы и AI-звонки — из <strong>одной фразы</strong>. Просто, как должно быть.</p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/hrenmanski-alt/ClirntCabinet">Смотреть демо</a>
+      <a class="link" href="#product">Узнать больше →</a>
     </div>
   </main>
 
-  <section class="stats">
-    <div class="stat"><small>Модулей готово</small><b>4 / 4</b></div>
-    <div class="stat"><small>Кадров арта</small><b>48</b></div>
-    <div class="stat"><small>Smoke-тестов</small><b>42 ✓</b></div>
-    <div class="stat"><small>Feature-веток</small><b>7</b></div>
+  <section class="stage" id="product">
+    <div class="stage-inner">
+      <div class="stage-top"><i></i><i></i><i></i> Живая символьная скульптура <button id="toggle" type="button">Пауза</button></div>
+      <pre id="ascii">Загрузка…</pre>
+      <div class="stage-foot"><span>Скачанный GIF → Unicode Braille</span><span>40 кадров · 90×30</span></div>
+    </div>
   </section>
 
-  <section id="features">
-    <h2>Что уже <span class="grad">работает</span></h2>
-    <p class="sub">Каркас продукта собран, проверен тестами и готов к подключению внешних сервисов.</p>
+  <section class="statement">
+    <h2>От фразы —<br>до работающего продукта.</h2>
+    <p>Планировщик, смета, инструменты и безопасные подтверждения уже собраны. Осталось подключить сервисы.</p>
+  </section>
+
+  <section class="section" id="features">
+    <h2 class="section-title">Всё на своих местах.</h2>
+    <p class="section-sub">Четыре готовых модуля, 42 проверки и прозрачная архитектура.</p>
     <div class="grid">
-      <div class="card"><div class="icon">✦</div><h3>Личный кабинет</h3><p><span class="ok">Готово.</span> Вход, дашборд, каталог решений, создание сайта, счета и демо-оплата.</p></div>
-      <div class="card"><div class="icon">◉</div><h3>AI call-центр</h3><p><span class="ok">Готово.</span> Диалог на русском, REST + WebSocket, звук, STT/TTS и журнал звонков.</p></div>
-      <div class="card"><div class="icon">⬡</div><h3>Один промпт → бизнес</h3><p><span class="ok">Готово.</span> План из 9 шагов, реестр инструментов, цена и окупаемость.</p></div>
-      <div class="card"><div class="icon">◇</div><h3>Утилиты</h3><p><span class="ok">Готово.</span> Бэкап SQLite, CSV-экспорт, изоляция данных и секреты только в .env.</p></div>
-      <div class="card"><div class="icon">◈</div><h3>Интеграции</h3><p><span class="wait">В работе.</span> Twilio, Novofon, Яндекс Директ и Метрика, соцсети, деплой.</p></div>
-      <div class="card"><div class="icon">✳</div><h3>Публикация</h3><p><span class="wait">В работе.</span> Витрина жива на Hugging Face; кабинету нужен VPS или PRO Space.</p></div>
+      <div class="card"><div class="n">01</div><h3>Личный кабинет</h3><p><span class="ok">Готово.</span> Вход, каталог, сайты, счета и демо-оплата.</p></div>
+      <div class="card"><div class="n">02</div><h3>AI call-центр</h3><p><span class="ok">Готово.</span> Русский диалог, REST, WebSocket и журнал звонков.</p></div>
+      <div class="card"><div class="n">03</div><h3>Один промпт → бизнес</h3><p><span class="ok">Готово.</span> План из 9 шагов, инструменты, цена и окупаемость.</p></div>
+      <div class="card"><div class="n">04</div><h3>Утилиты и безопасность</h3><p><span class="ok">Готово.</span> Бэкапы, экспорт, изоляция данных, секреты в .env.</p></div>
+      <div class="card"><div class="n">05</div><h3>Интеграции</h3><p><span class="wait">В работе.</span> Twilio, Novofon, Яндекс, соцсети и деплой.</p></div>
+      <div class="card"><div class="n">06</div><h3>Публикация</h3><p><span class="wait">В работе.</span> Витрина на Hugging Face, кабинету нужен VPS.</p></div>
     </div>
   </section>
 
   <section class="section" id="scheme">
-    <h2>Архитектура одним <span class="grad">взглядом</span></h2>
-    <p class="sub">Девять слоёв, 54 блока: от промпта до отчёта клиенту.</p>
+    <h2 class="section-title">Устроено до мелочей.</h2>
+    <p class="section-sub">Девять слоёв, 54 блока — от промпта до отчёта клиенту.</p>
     <img class="diagram" src="assets/business_full.png" alt="Полная схема бизнес-конвейера">
     <img class="diagram" src="assets/infrastructure_short.png" alt="Короткая схема инфраструктуры">
   </section>
 
-  <section class="section" id="art">
-    <h2>Обычное видео — <span class="grad">в символы</span></h2>
-    <p class="sub">Слева источник, справа результат в Unicode Braille. Никакой магии — только математика и любовь к деталям.</p>
+  <section class="section">
+    <h2 class="section-title">Видео становится символами.</h2>
+    <p class="section-sub">Слева скачанный источник, справа результат в Unicode Braille.</p>
     <div class="split">
-      <div class="panel"><img src="assets/neon_flow.gif" alt="Абстрактная неоновая волна — исходный GIF"></div>
+      <div class="panel"><img src="assets/hand_rotate.gif" alt="Вращающаяся ладонь — скачанный GIF"></div>
       <div class="panel"><pre class="sample" id="sample">…</pre></div>
     </div>
   </section>
 
   <footer>
-    <span class="pill">Hugging Face Spaces · static</span>
-    <span>Репозиторий: <a href="https://github.com/hrenmanski-alt/ClirntCabinet">hrenmanski-alt/ClirntCabinet</a></span>
-    <span>Генератор: <code>tools/gif_to_braille.py</code></span>
+    <span>Фон: <a href="https://commons.wikimedia.org/wiki/File:Open_Hand_Monument,_rotating_in_the_wind,_May_2017.gif">Open Hand Monument, Chandigarh</a> · CC BY-SA 4.0 · Wikimedia Commons</span>
+    <span><a href="https://github.com/hrenmanski-alt/ClirntCabinet">GitHub</a> · Hugging Face Spaces</span>
   </footer>
 </div>
 
 <script src="ascii_frames.js"></script>
 <script>
 (function(){
-  const frames = window.ASCII_FRAMES || [];
-  const out = document.getElementById('ascii');
-  const sample = document.getElementById('sample');
-  const toggle = document.getElementById('toggle');
-  let i = 0, timer = null;
+  const frames=window.ASCII_FRAMES||[];
+  const out=document.getElementById('ascii'), sample=document.getElementById('sample'), toggle=document.getElementById('toggle');
+  let i=0,timer=null;
   function draw(){
-    if(!frames.length) return;
-    out.textContent = frames[i];
-    if(sample && i % 6 === 0) sample.textContent = frames[i];
-    i = (i + 1) % frames.length;
+    if(!frames.length)return;
+    out.textContent=frames[i];
+    if(sample&&i%6===0)sample.textContent=frames[i];
+    i=(i+1)%frames.length;
   }
-  function play(){ if(!timer) timer = setInterval(draw, 85); toggle.textContent = 'Пауза'; }
-  function pause(){ clearInterval(timer); timer = null; toggle.textContent = 'Играть'; }
-  toggle.addEventListener('click', function(){ timer ? pause() : play(); });
-  document.addEventListener('keydown', function(e){ if(e.code === 'Space'){ e.preventDefault(); timer ? pause() : play(); } });
-  if(frames.length){ draw(); play(); }
+  function play(){if(!timer)timer=setInterval(draw,85);toggle.textContent='Пауза';}
+  function pause(){clearInterval(timer);timer=null;toggle.textContent='Играть';}
+  toggle.addEventListener('click',()=>timer?pause():play());
+  document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();timer?pause():play();}});
+  if(frames.length){draw();play();}
 })();
 </script>
 </body>
